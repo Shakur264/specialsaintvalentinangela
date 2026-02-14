@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angela</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --rose: #f6c1cc;
+  --ivoire: #fffafa;
+  --or: #b76e79;
+  --texte: #3a3a3a;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(180deg, var(--ivoire), var(--rose));
+  color: var(--texte);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---------- LOGIN ---------- */
+#login {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, var(--ivoire), var(--rose));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.login-card {
+  background: rgba(255,255,255,0.85);
+  padding: 40px 30px;
+  border-radius: 26px;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(183,110,121,0.25);
+}
+
+.login-card h1 {
+  font-family: 'Great Vibes', cursive;
+  color: var(--or);
+  font-size: 2.6rem;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 25px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(183,110,121,0.3);
+  font-size: 0.9rem;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 30px;
+  border: none;
+  background: var(--or);
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+#error {
+  display: none;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #b00020;
+}
+
+/* ---------- APP ---------- */
+.app {
+  display: none;
+}
+
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.6rem;
+  text-align: center;
+  color: var(--or);
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.tab {
+  display: none;
+  padding: 40px 25px 90px;
+  animation: fade 0.5s ease;
+}
+
+.tab.active {
+  display: block;
+}
+
+.card {
+  background: rgba(255,255,255,0.7);
+  border-radius: 22px;
+  padding: 24px;
+  margin-top: 25px;
+  box-shadow: 0 12px 30px rgba(183,110,121,0.18);
+  text-align: center;
+}
+
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  border-top: 1px solid rgba(183,110,121,0.25);
+  backdrop-filter: blur(10px);
+}
+
+nav button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--or);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+nav button:hover {
+  transform: scale(1.15);
+}
+
+button.luxury {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border-radius: 40px;
+  border: 1px solid var(--or);
+  background: transparent;
+  color: var(--or);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+button.luxury:hover {
+  background: var(--or);
+  color: white;
+}
+
+/* ---------- HEART ANIMATION ---------- */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp 4s ease-in forwards;
+  opacity: 0.8;
+  z-index: 200;
+}
+
+/* ---------- ALBUM PHOTOS ---------- */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.photo-grid img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- MODALE ---------- */
+#photoModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#photoModal img {
+  width: 100%;
+  border-radius: 20px;
+  display: block;
+}
+
+#photoModal p {
+  color: white;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ---------- PÉTALES DE ROSES ---------- */
+.petal {
+  position: fixed;
+  top: -30px;
+  font-size: 18px;
+  color: #ffb6c1;
+  opacity: 0.8;
+  z-index: 150;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+/* ---------- FEUX D'ARTIFICE ---------- */
+.firework {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #ff007f, #ffb6c1);
+  border-radius: 50%;
+  animation: explode 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 300;
+}
+
+@keyframes explode {
+  0% { transform: scale(0) translate(0,0); opacity:1; }
+  100% { transform: scale(1.5) translate(var(--tx), var(--ty)); opacity:0; }
+}
+
+#fireworkMessage {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem;
+  color: #b76e79;
+  text-align: center;
+  display: none;
+  z-index: 400;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes floatUp {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-120vh) scale(1.4); opacity: 0; }
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity:0.8; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <h1>Accès privé</h1>
+    <p>Un monde créé pour une seule personne.</p>
+    <input id="user" placeholder="Nom d'utilisateur">
+    <input id="pass" type="password" placeholder="Mot de passe">
+    <button onclick="login()">Entrer</button>
+    <div id="error">Identifiants incorrects</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+
+  <!-- Accueil -->
+  <div id="home" class="tab active">
+    <h1>Angela</h1>
+    <div id="fireworkMessage">Je t’aime encore plus ❤️</div>
+    <div class="subtitle">Depuis le 5 octobre 2024</div>
+    <div class="card" id="counter"></div>
+  </div>
+
+  <!-- Histoire -->
+  <div id="video" class="tab">
+    <h1>Notre histoire</h1>
+    <div class="card">Notre histoire, instant après instant.</div>
+  </div>
+
+  <!-- Souvenirs -->
+  <div id="souvenirs" class="tab">
+    <h1>Souvenirs</h1>
+    <div class="photo-grid" id="photoGrid"></div>
+
+    <!-- Modale -->
+    <div id="photoModal">
+      <div style="position:relative; max-width:90%; max-height:90%;">
+        <img id="modalImg" src="">
+        <p id="modalDesc"></p>
+        <button onclick="closeModal()" style="position:absolute; top:-10px; right:-10px; background:#b76e79; border:none; border-radius:50%; width:32px; height:32px; color:white; cursor:pointer;">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raisons -->
+  <div id="raisons" class="tab">
+    <h1>Pourquoi toi</h1>
+    <div class="card" id="reason">Ton sourire.</div>
+    <button class="luxury" onclick="newReason()">Encore une raison</button>
+  </div>
+
+  <!-- Pour toujours -->
+  <div id="coin" class="tab">
+    <h1>Pour toujours</h1>
+    <div class="card" id="valentine">
+      <p style="margin-bottom:20px;">Angela, veux-tu être ma Valentine pour toujours ?</p>
+      <button class="luxury" onclick="yesValentine()">Oui, je veux être ta Valentine</button>
+      <button class="luxury" onclick="noValentine()">Non</button>
+    </div>
+  </div>
+
+  <nav>
+    <button onclick="showTab('home')">❤️</button>
+    <button onclick="showTab('video')">🎥</button>
+    <button onclick="showTab('souvenirs')">✨</button>
+    <button onclick="showTab('raisons')">💍</button>
+    <button onclick="showTab('coin')">∞</button>
+  </nav>
+</div>
+
+<script>
+/* LOGIN */
+const USERNAME = "angela";
+const PASSWORD = "5octobre";
+
+function login() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+  if(u===USERNAME && p===PASSWORD){
+    document.getElementById("login").style.display="none";
+    document.getElementById("app").style.display="block";
+  } else {
+    document.getElementById("error").style.display="block";
+  }
+}
+
+/* NAVIGATION */
+function showTab(id){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+/* COMPTEUR */
+const start=new Date("2024-10-05T00:00:00");
+function updateCounter(){
+  const diff=new Date()-start;
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff/3600000)%24;
+  const m=Math.floor(diff/60000)%60;
+  document.getElementById("counter").innerHTML=`${d} jours, ${h} heures, ${m} minutes<br><em>de bonheur partagé</em>`;
+}
+setInterval(updateCounter,60000);
+updateCounter();
+
+/* RAISONS */
+const reasons=["Ton regard.","Ta douceur.","Nos silences.","Ta présence.","Parce que c’est toi."];
+function newReason(){
+  document.getElementById("reason").innerText=reasons[Math.floor(Math.random()*reasons.length)];
+}
+
+/* VALENTINE */
+function yesValentine(){
+  for(let i=0;i<20;i++) setTimeout(createHeart,i*120);
+  setTimeout(()=>{document.getElementById("valentine").innerHTML=
+    `<p style="font-size:1.1rem; line-height:1.6;">Je t’aime encore plus,<br>aujourd’hui et pour toujours ❤️ chère Angela,
+En ce jour de Saint-Valentin, je veux te rappeler à quel point tu es exceptionnelle pour moi. Ton sourire illumine mes journées, ta présence rend chaque instant plus doux, et ton cœur est un trésor que j’ai la chance de connaître.
+Chaque moment passé à tes côtés me rappelle combien je suis chanceux de t’avoir. Tu es belle, intelligente, et incroyablement unique. Aujourd’hui, je célèbre non seulement notre amour, mais aussi tout ce que tu es et tout ce que nous partageons.
+Merci d’être toi, merci de me rendre meilleur, merci d’aimer avec autant de sincérité. Je t’aime plus que les mots ne pourraient jamais l’exprimer.
+Joyeuse Saint-Valentin, mon amour. ❤️
+Avec tout mon amour,
+Urbain </p>`},1200);
+}
+function noValentine(){
+  document.getElementById("valentine").innerHTML=`<p style="opacity:0.8;">L’essentiel, c’est que tu sois heureuse 🤍</p>`;
+}
+function createHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerText="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(16+Math.random()*14)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+}
+
+/* ALBUM PHOTOS */
+const souvenirs=[
+  { src:"photos/photo1.jpg", date:"05/10/2024", desc:"Notre premier rendez-vous" },
+  { src:"photos/photo2.jpg", date:"12/11/2024", desc:"Notre premier dîner romantique" },
+  { src:"photos/photo3.jpg", date:"25/12/2024", desc:"Noël ensemble" },
+  { src:"photos/photo4.jpg", date:"14/02/2025", desc:"Notre premier 14 février" },
+  { src:"photos/photo5.jpg", date:"01/03/2025", desc:"Balade main dans la main" },
+  { src:"photos/photo6.jpg", date:"10/04/2025", desc:"Rires et complicité" },
+  { src:"photos/photo7.jpg", date:"22/05/2025", desc:"Petit week-end romantique" },
+  { src:"photos/photo8.jpg", date:"30/06/2025", desc:"Souvenirs inoubliables" }
+];
+const photoGrid=document.getElementById("photoGrid");
+souvenirs.forEach(s=>{
+  const img=document.createElement("img");
+  img.src=s.src;
+  img.alt=s.desc;
+  img.onclick=()=>openModal(s);
+  photoGrid.appendChild(img);
+});
+
+// Modale
+const modal=document.getElementById("photoModal");
+const modalImg=document.getElementById("modalImg");
+const modalDesc=document.getElementById("modalDesc");
+function openModal(photo){
+  modal.style.display="flex";
+  modalImg.src=photo.src;
+  modalDesc.innerHTML=`${photo.date} - ${photo.desc}`;
+}
+function closeModal(){ modal.style.display="none"; }
+
+/* PÉTALES DE ROSES */
+function createPetal() {
+  const p = document.createElement("div");
+  p.className = "petal";
+  p.innerText = "🌹";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.fontSize = (12 + Math.random() * 18) + "px";
+  const duration = 4000 + Math.random() * 4000;
+  p.style.animationDuration = duration + "ms";
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), duration);
+}
+setInterval(createPetal, 300);
+
+/* SURPRISE INTERACTIVE : FEUX D'ARTIFICE */
+let clickCount = 0;
+const homeTitle = document.querySelector("#home h1");
+homeTitle.style.cursor = "pointer";
+homeTitle.addEventListener("click", () => {
+  clickCount++;
+  if (clickCount === 5) {
+    triggerFireworks();
+    clickCount = 0;
+  }
+});
+
+function triggerFireworks() {
+  const msg = document.getElementById("fireworkMessage");
+  msg.style.display = "block";
+
+  for (let i = 0; i < 30; i++) {
+    const f = document.createElement("div");
+    f.className = "firework";
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 80 + Math.random() * 60;
+    f.style.setProperty("--tx", distance * Math.cos(angle) + "px");
+    f.style.setProperty("--ty", distance * Math.sin(angle) + "px");
+    f.style.left = "50%";
+    f.style.top = "50%";
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 1000);
+  }
+
+  setTimeout(() => { msg.style.display = "none"; }, 2500);
+}
+</script>
+
+</body>
+</html>
